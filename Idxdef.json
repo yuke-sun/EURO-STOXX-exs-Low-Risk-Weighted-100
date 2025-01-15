@@ -1,0 +1,90 @@
+{
+    "index_parameter": {},
+    "stages": [
+        {
+            "name": "selection",
+            "calendar_name": "STXSQ1",
+            "price_date": "cutoff_date",
+            "required_data": [],
+            "rules": [
+                {
+                    "rule": "filter_simple",
+                    "rule_type": 1,
+                    "rule_package": "qidxrules",
+                    "attribute": "icb5_l1",
+                    "operator": "not in",
+                    "value": [
+                        30
+                    ],
+                    "dataset_id": "parent_universe"
+                },
+                {
+                    "rule": "filter_simple",
+                    "rule_type": 1,
+                    "rule_package": "qidxrules",
+                    "attribute": "icb5_l3",
+                    "operator": "not in",
+                    "value": [
+                        351020
+                    ],
+                    "dataset_id": "parent_universe"
+                },
+                {
+                    "rule": "filter_top",
+                    "rule_type": 1,
+                    "rule_package": "qidxrules",
+                    "attribute": "vol",
+                    "target_count": 100,
+                    "target_percentage": null,
+                    "sort_order": "asc",
+                    "run_on_base_securities": false,
+                    "dataset_id": "parent_universe",
+                    "previous_dataset_id": ""
+                }
+            ]
+        },
+        {
+            "name": "weighting",
+            "calendar_name": "STXWQ1",
+            "price_date": "cutoff_date",
+            "required_data": [],
+            "rules": [
+                {
+                    "rule": "math_ops",
+                    "rule_package": "qidxrules",
+                    "rule_type": 14,
+                    "operator": "divide",
+                    "attribute_1": "inverse",
+                    "attribute_2": "vol",
+                    "result_column": null,
+                    "dataset_id": "index_universe"
+                },
+                {
+                    "rule": "weight_by_attribute",
+                    "rule_package": "qidxrules",
+                    "rule_type": 2,
+                    "attribute": "divide_inverse_vol",
+                    "dataset_id": "index_universe"
+                },
+                {
+                    "rule": "capping",
+                    "rule_type": 12,
+                    "rule_package": "qidxrules",
+                    "cap_attribute": "weight",
+                    "cap_limit": 0.1,
+                    "result_column": "capped_weight",
+                    "dataset_id": "index_universe"
+                },
+                {
+                    "rule": "weight_factor",
+                    "rule_package": "qidxrules",
+                    "rule_type": 13,
+                    "weight_attribute": "capped_weight",
+                    "price_attribute": "adjustedOpenPrice",
+                    "scale_factor_billions": 1
+                }
+            ]
+        }
+    ],
+    "views": {}
+}
