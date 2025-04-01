@@ -42,7 +42,7 @@ repo = repo_connector.connect(data_envt)
 
 ## bring your own data
 # vol_data = pd.read_csv(directory + '\\vol_data_update.csv', converters={"icb_sectorl1": str,"icb_sectorl3": str })
-vol_data = pd.read_csv(directory + '\\vol_data_update.csv')
+vol_data = pd.read_csv(directory + '\\vol_data_update_2.csv')
 vol_data['reportDate'] = pd.to_datetime(vol_data['reportDate'])
 vol_data['inverse'] = 1
 vol_data['inverse_vol'] = 1/vol_data['vol']
